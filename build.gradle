@@ -10,15 +10,26 @@ repositories {
 }
 
 dependencies {
+    // Tomcat
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:8.5.42'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.42'
+
+    // Servlet & JSP
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'javax.servlet:jstl:1.2'
+
+    // 비밀번호 정책
     implementation 'org.passay:passay:1.6.1'
 
+    // Logging
     implementation 'org.slf4j:slf4j-api:2.0.13'
     runtimeOnly 'ch.qos.logback:logback-classic:1.4.14'
 
+    // Test - JUnit, AssertJ, Mockito
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation("org.assertj:assertj-core:3.25.3")
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation 'org.assertj:assertj-core:3.25.3'
     testImplementation 'org.mockito:mockito-core:5.11.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
 }
@@ -26,3 +37,26 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+// ===== 웹 앱 동기화 작업 =====
+tasks.register('syncToWebapps', Sync) {
+    dependsOn 'classes'
+    into 'webapps'
+
+    // 웹 리소스
+    from('src/main/webapp')
+
+    // .class → WEB-INF/classes
+    from(sourceSets.main.output.classesDirs) {
+        into 'WEB-INF/classes'
+    }
+
+    // 런타임 JAR → WEB-INF/lib
+    from(configurations.runtimeClasspath) {
+        include '*.jar'
+        into 'WEB-INF/lib'
+    }
+}
+
+// build 후 자동으로 webapps 동기화
+tasks.build.finalizedBy('syncToWebapps')
