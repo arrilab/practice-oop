@@ -1,0 +1,63 @@
+package org.example.s4_jdbc.v2;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class JdbcTemplate {
+    public void executeUpdate(String sql, PreparedStatementSetter pss) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pss.setter(pstmt);
+
+            pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    public <T> T executeQuery(String sql, PreparedStatementSetter pss, RowMapper<T> rowMapper) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pss.setter(pstmt);
+
+            rs = pstmt.executeQuery();
+
+            T obj = null;
+            if (rs.next()) {
+                return rowMapper.map(rs);
+            }
+
+            return obj;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+}

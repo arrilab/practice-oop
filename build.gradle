@@ -18,8 +18,14 @@ dependencies {
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'javax.servlet:jstl:1.2'
 
-    // 비밀번호 정책
+    // Password 정책
     implementation 'org.passay:passay:1.6.1'
+
+
+    // JDBC, DBCP
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'org.springframework:spring-jdbc:5.3.22'
+    testImplementation 'com.h2database:h2:2.1.214'
 
     // Logging
     implementation 'org.slf4j:slf4j-api:2.0.13'
