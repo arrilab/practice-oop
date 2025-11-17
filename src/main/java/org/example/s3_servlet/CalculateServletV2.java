@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/calculate")
+//@WebServlet("/calculate")
 public class CalculateServletV2 extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(CalculateServletV2.class);
 

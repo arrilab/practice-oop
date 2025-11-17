@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+//@WebServlet("/calculate")
 public class CalculateServletV1 extends GenericServlet {
     private static final Logger log = LoggerFactory.getLogger(CalculateServletV1.class);
 

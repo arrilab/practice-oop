@@ -1,6 +1,5 @@
-package org.example.s3_servlet;
+package org.example.s7_mvc;
 
-import org.apache.catalina.LifecycleException;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 import org.slf4j.Logger;
@@ -9,16 +8,13 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
-public class Main {
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
+public class WebApplicationServer {
 
-    public static void main(String[] args) throws LifecycleException, IOException {
-        // 1) 포트: 환경변수/시스템프로퍼티로 오버라이드 가능
-        int port = Integer.parseInt(System.getProperty(
-                        "PORT",
-                        System.getenv().getOrDefault("PORT", "8080")
-                )
-        );
+    private static final Logger log = LoggerFactory.getLogger(WebApplicationServer.class);
+
+    public static void main(String[] args) throws Exception {
+        // 1) 포트
+        int port = 8080;
 
         // 2) 웹 루트: 루트 webapps (Gradle syncToWebapps가 채워줌)
         var webapps = new File("webapps").getAbsoluteFile();
